@@ -69,7 +69,7 @@ class HomeController extends Controller
         $listProduct = DB::table('product')->get();
 
         $userName = $request->session()->get('userName');
-        $listCart = DB::table('cart')->join('product', 'cart.pid', '=', 'product.id')->select('cart.id','product.pName','product.price','cart.quantity','cart.buy','cart.status')->get();
+        $listCart = DB::table('cart')->join('product', 'cart.pid', '=', 'product.id')->select('cart.id','product.pName','product.price','cart.quantity','cart.totalbill','cart.buy','cart.date','cart.status')->where('cart.userName','=',$userName)->orderBy('cart.date', 'desc')->get();
         if (strlen( $listCart) != 2)
             $mess = '1';
         return view("cart")->with(['listCategory'=>$listCategory,'listBrand'=>$listBrand,'listProduct'=>$listProduct,'listCart'=>$listCart,'mess'=>$mess]);
@@ -80,19 +80,26 @@ class HomeController extends Controller
         $id = $request->id;
         $update = $request->update;
         $quantity = $request->quantity;
+        $price = $request->price;
         if ($update == 'Add'){
             $quantity = $quantity+1;
-            DB::table('cart')->where('id', $id)->update(['quantity' => $quantity]);
+            DB::table('cart')->where('id', $id)->update(['quantity' => $quantity, 'totalbill' => ($quantity*$price)]);
         }
         else
         if ($update == 'Delete'){
             $quantity = $quantity-1;
-            DB::table('cart')->where('id', $id)->update(['quantity' => $quantity]);
+            DB::table('cart')->where('id', $id)->update(['quantity' => $quantity, 'totalbill' => ($quantity*$price)]);
         }
         else
         if ($update == 'Buy'){
-            $quantity = $quantity+1;
-            DB::table('cart')->where('id', $id)->update(['status' => 1]);
+            DB::table('cart')->where('id', $id)->update(['status' => 1,'buy' => 1]);
+        }
+        else
+        if ($update == 'New'){
+            $userName = $request->session()->get('userName');
+            $pid = $request->pid;
+            $quantity = $request->quantity;
+            DB::table('cart')->insert(['userName' => $userName, 'pid' => $pid, 'quantity' => $quantity, 'totalbill' => ($quantity*$price), 'buy' => 0, 'status' => 0, 'date' => NOW()]);
         }
         DB::table('cart')->where('quantity',0)->delete();
         return redirect()->route('cart');

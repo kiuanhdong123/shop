@@ -141,7 +141,9 @@
                         <th>Quantity</th>
                         <th>Add</th>
                         <th>Delete</th>
+                        <th>Total Bill</th>
                         <th>Buy</th>
+                        <th>Date</th>
                         <th>Status</th>
                     </tr>
                 </thead>
@@ -151,11 +153,27 @@
                         <td>{{ $c->pName }}</td>
                         <td>{{ $c->price }}</td>
                         <td>{{ $c->quantity }}</td>
-                        <td><button type="button" class="btn btn-outline-success"><a href="updateCart?update=Add&id={{ $c->id }}&quantity={{ $c->quantity }}">Add</a></button></td>
-                        <td><button type="button" class="btn btn-outline-danger"><a href="updateCart?update=Delete&id={{ $c->id }}&quantity={{ $c->quantity }}">Delete</a></button></td>
-                        <td><button type="button" class="btn btn-outline-info"><a href="updateCart?update=Buy&id={{ $c->id }}">Buy</a></button></td>
+                        <td>
+                            @if($c->status == '0')
+                                <button type="button" class="btn btn-outline-success"><a href="updateCart?update=Add&id={{ $c->id }}&quantity={{ $c->quantity }}&price={{ $c->price }}">Add</a></button>
+                            @endif
+                        </td>
+                        <td>
+                            @if($c->status == '0')
+                                <button type="button" class="btn btn-outline-danger"><a href="updateCart?update=Delete&id={{ $c->id }}&quantity={{ $c->quantity }}&price={{ $c->price }}">Delete</a></button>
+                            @endif
+                        </td>
+                        <td>{{ $c->totalbill }}</td>
+                        <td>
+                            @if($c->status == '0')
+                                <button type="button" class="btn btn-outline-info"><a href="updateCart?update=Buy&id={{ $c->id }}&price={{ $c->price }}">Buy</a></button>
+                            @endif
+                        </td>
+                        <td>{{ $c->date }}</td>
                         <td>
                             @if($c->status == '1')
+                                <button type="button" class="btn btn-secondary">Shipping</button>
+                            @elseif ($c->status == '2')
                                 <button type="button" class="btn btn-success">Success</button>
                             @endif  
                         </td>

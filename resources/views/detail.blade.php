@@ -121,7 +121,7 @@
                         <img class="card-img-top" src="{{ $p->img }}" style="width:100%">
                         <div class="card-body">
                             <h4 class="card-title">Price: {{ $p->price }}$</h4>
-                            <a href="#" class="btn btn-primary stretched-link">Buy</a>
+                            <a href="updateCart?update=New&pid={{ $p->id }}&quantity=1&price={{ $p->price }}" class="btn btn-primary stretched-link">Buy</a>
                         </div>
                     </div>
                 </div>
