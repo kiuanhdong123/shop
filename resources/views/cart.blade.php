@@ -94,11 +94,15 @@
             <p style=" width: 150px; float: left;">Hello {{ Session::get('userName')}} </p>
         @endif
 
-        @if (Session::get('permission') == '0')
-            <p style="float: right; width: 150px; height: 30px;">day la admin</p>
-        @else
-            <p style="float: right; width: 150px; height: 30px;">day la user</p>
-        @endif
+        <button style="float: right;" type="button" class="btn btn-light"><a href="login">Sign out</a></button>
+            
+        @if(Session::get('permission') == '1')
+                <button style="float: right;" type="button" class="btn btn-light"><a href="cart">Cart</a></button>
+                <button style="float: right;" type="button" class="btn btn-light"><a href="user">User</a></button>
+            @else
+                <button style="float: right;" type="button" class="btn btn-light"><a href="cart">Cart</a></button>
+                <button style="float: right;" type="button" class="btn btn-light"><a href="product">Admin</a></button>
+            @endif
     </div>
 
     <div class="header">      
@@ -129,7 +133,7 @@
     </div>
 
     @if( $mess  == '')
-            <p>ban chua mua hang</p>
+            <p style="">gio hang trong</p>
         @else
             <div class="container">
             <h2>Cart of {{ Session::get('userName')}}</h2>
@@ -145,6 +149,9 @@
                         <th>Buy</th>
                         <th>Date</th>
                         <th>Status</th>
+                        @if(Session::get('permission') == 0)
+                            <th>Check</th>
+                        @endif
                     </tr>
                 </thead>
                 <tbody>
@@ -177,6 +184,9 @@
                                 <button type="button" class="btn btn-success">Success</button>
                             @endif  
                         </td>
+                        @if(Session::get('permission') == 0)
+                            <td><button type="button" class="btn btn-danger"><a href="updateCart?update=Check&id={{ $c->id }}">Check</a></button></td>
+                        @endif
                     </tr>
                 @endforeach
                 </tbody>

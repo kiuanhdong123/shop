@@ -9,7 +9,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   </head>
-    <style>
+  <style>
         body{
             background-color: #F2CEF2;
         }
@@ -89,8 +89,7 @@
         }
     </style>
   <body>
-        <div class="cart">
-
+      <div class="cart">
             @if(Session::has('userName'))
                 <p style=" width: 150px; float: left;">Hello {{ Session::get('userName')}} </p>
             @endif
@@ -99,55 +98,71 @@
 
             @if(Session::get('permission') == '1')
                 <button style="float: right;" type="button" class="btn btn-light"><a href="cart">Cart</a></button>
-                <button style="float: right;" type="button" class="btn btn-light"><a href="user">User</a></button>
             @else
                 <button style="float: right;" type="button" class="btn btn-light"><a href="cart">Cart</a></button>
                 <button style="float: right;" type="button" class="btn btn-light"><a href="product">Admin</a></button>
             @endif
-        </div>
+      </div>
 
         <div class="header">      
-            <p class="p">shopping</p>
+            <p class="p">Information</p>
         </div>
-        <div class="category">
-            <div class="btn-group">
-                <button type="button" class="btn btn-light" ><a href="/home">Home</a></button>
-                @foreach($listCategory as $c) 
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-light dropdown-toggle" data-toggle="dropdown">{{ $c->Cname }}</button>
-                        <div class="dropdown-menu">
-                            @foreach($listBrand as $b) 
-                                @if($b->Cid == $c->Cid)
-                                    <a class="dropdown-item" href="Brand?bid={{ $b->id }}">{{ $b->bName }}</a>
-                                @endif                             
-                            @endforeach
-                        </div>
-                    </div>
-                @endforeach
-                
-            </div> 
-            <div class="search">
-                    <form action="search" method="get"  >
-                        <input class="contain" type="text" name="searchName" placeholder="Search..."> 
-                        <input type="submit" value="Search"></imput>
-                    </form>
-                </div>   
-        </div>
-
+        <button type="button" class="btn btn-light" ><a href="/home">Home</a></button>
         <br><br>
-        <div class="flex-container">
-            @foreach($listProduct as $p) 
-                <div class="product-box">
-                    <a href="detail?pid={{ $p->id }}"><img src="{{ $p->img }}" style="display: block; width: 150px; padding: 5px;"><br></a>
-                    <h4>{{ $p->pName }}</h4><br>
-                    <p>Price: {{ $p->price }}$</p> <br>
-                </div>
-            @endforeach
-        </div>
-     
-        
-  
-    
+      @if(Session::get('permission') == '1')  
+        <form action="{{url('userController')}}" method="post" >
+          @csrf
+          <table class="table table-hover" style="background: white; width: 800px; margin: auto;">
+              <tr>
+                  <th style=" width: 60px;">
+                    <p>User Name:</p>
+                  </th>
+                  <th>
+                    <input type="text" name="userName" class="form-control" value ="{{ $user[0]->userName }}" readonly>   
+                  </th>
+              </tr>
+              <tr>
+                  <th style=" width: 60px;">
+                    <p>Password:</p>
+                  </th>
+                  <th>
+                    <input type="text" name="password" class="form-control" value ="{{ $user[0]->password }}">   
+                  </th>
+              </tr>
+              <tr>
+                  <th style=" width: 60px;">
+                    <p>Email:</p>
+                  </th>
+                  <th>
+                    <input type="text" name="email" class="form-control" value ="{{ $user[0]->email }}">   
+                  </th>
+              </tr>
+              <tr>
+                  <th style=" width: 60px;">
+                    <p>Address:</p>
+                  </th>
+                  <th>
+                    <input type="text" name="address" class="form-control" value ="{{ $user[0]->address }}">   
+                  </th>
+              </tr>
+              <tr>
+                  <th style=" width: 60px;">
+                    <p>Phone:</p>
+                  </th>
+                  <th>
+                    <input type="text" name="phone" class="form-control" value ="{{ $user[0]->phone }}" >   
+                  </th>
+              </tr>
+              <tr>
+                  <th style=" width: 60px;">
+                    <button class="btn btn-info" type="submit" name="Submit" value="UpdateProduct">Save</button>     
+                  </th>
+              </tr>
+          </table>
+        </form>
+      @endif         
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
